@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   quality-check:
@@ -49,7 +51,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./docker/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-project-mfr:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-project-mfr:buildcache
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-mfr:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-mfr:buildcache
           cache-to: type=inline
