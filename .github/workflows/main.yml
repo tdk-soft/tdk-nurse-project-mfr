@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Grant write permissions for private repo
+permissions:
+  contents: write
+
 jobs:
   quality-check:
     runs-on: ubuntu-latest
