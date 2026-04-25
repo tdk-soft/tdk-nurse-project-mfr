@@ -7,15 +7,15 @@ resources:
 - ../../base
 - namespace.yaml
 
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
 patches:
 - path: patches/replicas.yaml
 - path: patches/resources-dev.yaml
 - path: patches/service-dev.yaml
-- target:
-    kind: Deployment
-    name: mfr-care
-    version: v1
-  patch: |
+- patch: |
     # Replace imagePullPolicy to Always for development
     - op: replace
       path: /spec/template/spec/containers/0/imagePullPolicy
@@ -38,26 +38,29 @@ patches:
         value: "true"
       - name: LOG_LEVEL
         value: debug
+  target:
+    kind: Deployment
+    name: mfr-care
+    version: v1
 
 # Development-specific images with commit SHA (NO LATEST)
 images:
 - name: tdksoft341/tdk-nurse-project-mfr
   newName: tdksoft341/tdk-nurse-project-mfr
-  newTag: ${COMMIT_SHA} # Injected by CI/CD pipeline
 
 nameSuffix: -dev
 
 commonLabels:
   env: development
   environment: dev
-  team: backend
   managed-by: argocd
+  team: backend
 
 # Merge development config overrides
 configMapGenerator:
-- name: app-config
-  behavior: merge
+- behavior: merge
   literals:
   - NODE_ENV=development
   - LOG_LEVEL=debug
   - CORS_ORIGIN=http://localhost:3001
+  name: app-config
