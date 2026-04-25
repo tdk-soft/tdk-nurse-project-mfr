@@ -31,9 +31,14 @@ spec:
         version: v1
     spec:
       serviceAccountName: mfr-care-sa # Least privilege principle
+
+      # Use the secret created in Step 1 to pull from private Docker Hub
+      imagePullSecrets:
+      - name: regcred
+
       terminationGracePeriodSeconds: 60 # Allow graceful shutdown
 
-      # Pod-level security context (fsGroup belongs here)
+      # Pod-level security context
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -54,7 +59,7 @@ spec:
         - configMapRef:
             name: app-config
         - secretRef:
-            name: app-secrets # for secrets
+            name: app-secrets
         # Container-level security context
         securityContext:
           allowPrivilegeEscalation: false
@@ -63,7 +68,7 @@ spec:
             - ALL
           readOnlyRootFilesystem: true
 
-        # Liveness probe - restarts container if unhealthy
+        # Liveness probe
         livenessProbe:
           httpGet:
             path: /health
@@ -75,7 +80,7 @@ spec:
           successThreshold: 1
           failureThreshold: 3
 
-        # Readiness probe - removes from service if not ready
+        # Readiness probe
         readinessProbe:
           httpGet:
             path: /ready
@@ -87,16 +92,16 @@ spec:
           successThreshold: 1
           failureThreshold: 3
 
-        # Startup probe for slow-starting applications
+        # Startup probe
         startupProbe:
           httpGet:
             path: /health
             port: 3000
           initialDelaySeconds: 0
           periodSeconds: 5
-          failureThreshold: 30 # Allows up to 2.5 minutes for startup
+          failureThreshold: 30
 
-        # Resource limits - CRITICAL for cluster stability
+        # Resource limits
         resources:
           requests:
             memory: "256Mi"
@@ -110,7 +115,7 @@ spec:
           mountPath: /tmp
         - name: cache
           mountPath: /app/.cache
-      # Temporary volumes for read-only filesystem
+
       volumes:
       - name: tmp
         emptyDir:
@@ -120,7 +125,7 @@ spec:
         emptyDir:
           medium: Memory
           sizeLimit: 128Mi
-      # Pod scheduling preferences
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -139,12 +144,11 @@ spec:
                   app: mfr-care
               topologyKey: topology.kubernetes.io/zone
 
-      # Node selection and tolerations
       nodeSelector:
         kubernetes.io/os: linux
       tolerations:
       - key: "CriticalAddonsOnly"
         operator: "Exists"
-      # DNS configuration
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
