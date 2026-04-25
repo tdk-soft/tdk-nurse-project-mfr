@@ -15,6 +15,10 @@ resources:
     # Remove affinity for dev environment
     # Add debug port for development
     # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
 patches:
 - path: patches/replicas.yaml
 - path: patches/resources-dev.yaml
@@ -51,7 +55,7 @@ patches:
 images:
 - name: tdksoft341/tdk-nurse-mfr
   newName: tdksoft341/tdk-nurse-mfr
-  newTag: git-9f1ea390
+  newTag: git-9ffbb96f
 - name: tdksoft341/tdk-nurse-project-mfr
   newName: tdksoft341/tdk-nurse-project-mfr
 
