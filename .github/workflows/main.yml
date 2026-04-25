@@ -56,3 +56,32 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-mfr:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-mfr:buildcache
           cache-to: type=inline
+
+  deploy-dev:
+      needs: build-and-push
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Set up Kustomize
+          uses: imranismail/setup-kustomize@v2
+
+        - name: Update Kubernetes resources
+          run: |
+            cd k8s/overlays/development
+            # Update the image tag to the latest SHA or 'latest'
+            # This will update the file k8s/overlays/development/kustomization.yaml with the new image tag
+            # kustomizer edit set image [image_tag]=[new_image_tag]
+            kustomize edit set image ${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-project-mfr=${{ secrets.DOCKERHUB_USERNAME }}/tdk-nurse-project-mfr:latest
+            
+        - name: Commit and push changes
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            # Commit and Push the update kustomization.yaml file to the repository
+            git add k8s/overlays/development/kustomization.yaml
+            git commit -m "chore(gitops): update dev image to latest [skip ci]"
+            git push

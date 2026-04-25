@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nextjs-app
+  name: mfr-care # This will become mfr-care-dev due to suffix
 spec:
-  replicas: 1 # A single pod is sufficient for development
+  replicas: 1
