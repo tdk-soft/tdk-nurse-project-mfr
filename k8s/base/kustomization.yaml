@@ -10,17 +10,15 @@ resources:
 - secrets.yaml
 - serviceaccount.yaml
 
-# Common labels for all resources
-commonLabels:
-  app.kubernetes.io/name: mfr-care
-  app.kubernetes.io/version: v1
-  app.kubernetes.io/managed-by: kustomize
-  app.kubernetes.io/part-of: tdk-nurse-project
-
 # Labels transformer
 labels:
 - pairs:
     app.kubernetes.io/component: backend
+    app.kubernetes.io/name: mfr-care
+    app.kubernetes.io/version: v1
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/part-of: tdk-nurse-project
+
   includeSelectors: true
   includeTemplates: true
 

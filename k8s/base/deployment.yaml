@@ -49,7 +49,7 @@ spec:
 
       containers:
       - name: app
-        image: tdksoft341/tdk-nurse-project-mfr:latest # CI will replace with commit SHA
+        image: tdksoft341/tdk-nurse-mfr:latest # CI will replace with commit SHA
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
