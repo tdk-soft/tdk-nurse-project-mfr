@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mfr-care-pdb
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: mfr-care

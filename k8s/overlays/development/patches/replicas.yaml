@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mfr-care # This will become mfr-care-dev due to suffix
+  name: mfr-care
 spec:
   replicas: 1

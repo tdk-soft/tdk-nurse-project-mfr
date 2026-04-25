@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mfr-care-prod
+  labels:
+    env: production
+    name: mfr-care-prod
+    pod-security.kubernetes.io/enforce: restricted

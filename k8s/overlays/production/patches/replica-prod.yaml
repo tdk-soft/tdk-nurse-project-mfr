@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mfr-care
+spec:
+  replicas: 5 # Production scale
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1

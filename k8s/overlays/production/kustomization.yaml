@@ -1,17 +1,41 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
+namespace: mfr-care-prod
+
 resources:
-  - ../../base
-# ArgoCD will specifically monitor this folder
+- ../../base
+- namespace.yaml
+- networkpolicy.yaml
+- pdb.yaml
+- hpa.yaml
+
+patches:
+- path: patches/replicas-prod.yaml
+- path: patches/resources-prod.yaml
+- path: patches/hpa-settings.yaml
+
+# Production with signed tags only
+images:
+- name: tdksoft341/tdk-nurse-project-mfr
+  newName: tdksoft341/tdk-nurse-project-mfr
+  newTag: ${PRODUCTION_TAG} # Must be a signed git tag or semver
+
+nameSuffix: -prod
+
 commonLabels:
   env: production
-patches:
-  - path: patches/scale-and-resources.yaml
+  environment: prod
+  team: backend
+  compliance: soc2
+  managed-by: argocd
+
+# Production config overrides
 configMapGenerator:
-  - name: app-config
-    literals:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://api.tdksoft.com
-images:
-  - name: tdksoftconsulting/nextjs-app
-    newTag: v1.0.0 # This tag will be updated by the release.yml file
+- name: app-config
+  behavior: merge
+  literals:
+  - NODE_ENV=production
+  - LOG_LEVEL=warn
+  - CORS_ORIGIN=https://app.tdknurse.com
+  - RATE_LIMIT_MAX_REQUESTS=20

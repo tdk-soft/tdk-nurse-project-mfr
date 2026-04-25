@@ -1,21 +1,140 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nextjs-app
+  name: mfr-care
+  labels:
+    app: mfr-care
+    app.kubernetes.io/name: mfr-care
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/managed-by: kustomize
+    version: v1
 spec:
+  replicas: 2 # Default value, will be overridden by environment overlays
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0 # Zero downtime deployment
   selector:
     matchLabels:
-      app: nextjs-app
+      app: mfr-care
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
       labels:
-        app: nextjs-app
+        app: mfr-care
+        app.kubernetes.io/name: mfr-care
+        app.kubernetes.io/component: backend
+        version: v1
     spec:
+      serviceAccountName: mfr-care-sa # Least privilege principle
+      terminationGracePeriodSeconds: 60 # Allow graceful shutdown
       containers:
       - name: app
-        image: tdksoftconsulting/nextjs-app:latest # Will be updated by the CI
+        image: tdksoft341/tdk-nurse-project-mfr:latest # CI will replace with commit SHA
+        imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - name: http
+          containerPort: 3000
+          protocol: TCP
         envFrom:
         - configMapRef:
             name: app-config
+        - secretRef:
+            name: app-secrets # for secrets
+        # Liveness probe - restarts container if unhealthy
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        # Readiness probe - removes from service if not ready
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        # Startup probe for slow-starting applications
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          failureThreshold: 30 # Allows up to 2.5 minutes for startup
+        # Resource limits - CRITICAL for cluster stability
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # Security context - defense in depth
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 3000
+          fsGroup: 2000
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /app/.cache
+      # Temporary volumes for read-only filesystem
+      volumes:
+      - name: tmp
+        emptyDir:
+          medium: Memory
+          sizeLimit: 64Mi
+      - name: cache
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
+      # Pod scheduling preferences
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: mfr-care
+              topologyKey: kubernetes.io/hostname
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: mfr-care
+              topologyKey: topology.kubernetes.io/zone
+      # Node selection and tolerations
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      # DNS configuration
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

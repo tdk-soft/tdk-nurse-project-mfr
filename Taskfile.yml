@@ -1,0 +1,336 @@
+# Taskfile.yml - Local push-based deployment
+# Usage: task <command>
+# Install: https://taskfile.dev/installation/
+
+version: '3'
+
+vars:
+  KUBECONFIG: "{{.HOME}}/.kube/config"
+  NAMESPACE_DEV: mfr-care-dev
+  NAMESPACE_STAGING: mfr-care-staging
+  NAMESPACE_PROD: mfr-care-prod
+  IMAGE_NAME: tdksoft341/tdk-nurse-project-mfr
+  COMMIT_SHA:
+    sh: git rev-parse --short HEAD 2>/dev/null || echo "local"
+  CURRENT_DATE:
+    sh: date +%Y%m%d-%H%M%S
+  DEV_TAG: "{{.COMMIT_SHA}}-dev"
+
+tasks:
+  # ------------------------------------------------------------
+  # Prerequisites & Setup
+  # ------------------------------------------------------------
+
+  default:
+    desc: Show available tasks
+    cmds:
+    - task --list
+    silent: true
+
+  check-prereqs:
+    desc: Check if required tools are installed
+    cmds:
+    - command -v kubectl >/dev/null 2>&1 || { echo "❌ kubectl is not installed"; exit 1; }
+    - command -v kustomize >/dev/null 2>&1 || { echo "❌ kustomize is not installed"; exit 1; }
+    - command -v docker >/dev/null 2>&1 || { echo "❌ docker is not installed"; exit 1; }
+    - test -f {{.KUBECONFIG}} || { echo "❌ kubeconfig not found at {{.KUBECONFIG}}"; exit 1; }
+    - kubectl cluster-info --kubeconfig={{.KUBECONFIG}} >/dev/null 2>&1 || { echo "❌ Cannot connect to cluster"; exit 1; }
+    - echo "✅ All prerequisites satisfied"
+    silent: false
+
+  create-namespaces:
+    desc: Create required namespaces
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} create namespace {{.NAMESPACE_DEV}} --dry-run=client -o yaml | kubectl apply -f -
+    - kubectl --kubeconfig={{.KUBECONFIG}} create namespace {{.NAMESPACE_STAGING}} --dry-run=client -o yaml | kubectl apply -f -
+    - kubectl --kubeconfig={{.KUBECONFIG}} create namespace {{.NAMESPACE_PROD}} --dry-run=client -o yaml | kubectl apply -f -
+    - echo "✅ Namespaces created/verified"
+    silent: false
+
+  # ------------------------------------------------------------
+  # Build & Push Image (Local development)
+  # ------------------------------------------------------------
+
+  docker-login:
+    desc: Login to Docker registry using environment variables
+    cmds:
+    - echo "$DOCKERHUB_PAT" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    silent: false
+
+  build:
+    deps:
+    - docker-login
+    desc: Build Docker image for local development
+    cmds:
+    # - echo "🔨 Building image: {{.IMAGE_NAME}}:{{.DEV_TAG}} "
+    - docker build -t {{.IMAGE_NAME}}:{{.DEV_TAG}} -t {{.IMAGE_NAME}}:latest ./docker
+    - echo "✅ Image built successfully"
+    silent: false
+
+  build-no-cache:
+    desc: Build Docker image without cache
+    cmds:
+    #  - echo "🔨 Building image (no cache): {{.IMAGE_NAME}}:{{.DEV_TAG}}"
+    - docker build --no-cache -t {{.IMAGE_NAME}}:{{.DEV_TAG}} -t {{.IMAGE_NAME}}:latest ./docker
+    - echo "✅ Image built successfully"
+    silent: false
+
+  push-local:
+    desc: Push image to local registry (use for kind/minikube)
+    cmds:
+    - echo "📤 Pushing image to local cluster..."
+    - kind load docker-image {{.IMAGE_NAME}}:{{.DEV_TAG}} --name kind 2>/dev/null || \ minikube image load {{.IMAGE_NAME}}:{{.DEV_TAG}} 2>/dev/null || \ echo "⚠️  Not running kind/minikube, skipping push"
+    - echo "✅ Image loaded to local cluster"
+    silent: false
+
+  # ------------------------------------------------------------
+  # Deployment Commands (Push-based)
+  # ------------------------------------------------------------
+
+  deploy-dev:
+    desc: Deploy to development environment (local cluster)
+    deps: [ check-prereqs, create-namespaces ]
+    cmds:
+    - echo "🚀 Deploying to DEV environment (push-based)..."
+    #- echo "   Image tag: {{.DEV_TAG}}"
+    - |
+      cd k8s/overlays/development
+      kustomize edit set image {{.IMAGE_NAME}}={{.IMAGE_NAME}}:{{.DEV_TAG}}
+      kubectl --kubeconfig={{.KUBECONFIG}} apply -k . --prune --namespace={{.NAMESPACE_DEV}}
+    - task: rollout-status-dev
+    - echo "✅ DEV deployment complete"
+    silent: false
+
+  deploy-staging:
+    desc: Deploy to staging environment (local cluster)
+    deps: [ check-prereqs, create-namespaces ]
+    cmds:
+    - echo "🚀 Deploying to STAGING environment (push-based)..."
+    # - echo "   Image tag: {{.DEV_TAG}}"
+    - |
+      cd k8s/overlays/staging
+      kustomize edit set image {{.IMAGE_NAME}}={{.IMAGE_NAME}}:{{.DEV_TAG}}
+      kubectl --kubeconfig={{.KUBECONFIG}} apply -k . --prune --namespace={{.NAMESPACE_STAGING}}
+    - task: rollout-status-staging
+    - echo "✅ STAGING deployment complete"
+    silent: false
+
+  deploy-prod:
+    desc: Deploy to production environment (with confirmation)
+    deps: [ check-prereqs ]
+    cmds:
+    #- echo "⚠️  WARNING: Deploying to PRODUCTION environment"
+    #- echo "   Image tag: {{.DEV_TAG}}"
+    #- echo "   Namespace: {{.NAMESPACE_PROD}}"
+    - task: confirm
+    - |
+      cd k8s/overlays/production
+      kustomize edit set image {{.IMAGE_NAME}}={{.IMAGE_NAME}}:{{.DEV_TAG}}
+      kubectl --kubeconfig={{.KUBECONFIG}} apply -k . --prune --namespace={{.NAMESPACE_PROD}}
+    - task: rollout-status-prod
+    - echo "✅ PRODUCTION deployment complete"
+    silent: false
+
+  deploy-all:
+    desc: Deploy to all environments sequentially
+    cmds:
+    - task: deploy-dev
+    - task: deploy-staging
+    - echo "⏸️  Promote to production? (manual approval required)"
+    - task: deploy-prod
+    silent: false
+
+  # ------------------------------------------------------------
+  # Rollout Status Commands
+  # ------------------------------------------------------------
+
+  rollout-status-dev:
+    desc: Check rollout status for development
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} rollout status deployment/mfr-care-dev --timeout=5m
+    silent: false
+
+  rollout-status-staging:
+    desc: Check rollout status for staging
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_STAGING}} rollout status deployment/mfr-care-staging --timeout=5m
+    silent: false
+
+  rollout-status-prod:
+    desc: Check rollout status for production
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_PROD}} rollout status deployment/mfr-care-prod --timeout=5m
+    silent: false
+
+  # ------------------------------------------------------------
+  # Rollback Commands
+  # ------------------------------------------------------------
+
+  rollback-dev:
+    desc: Rollback development deployment
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} rollout undo deployment/mfr-care-dev
+    - task: rollout-status-dev
+    silent: false
+
+  rollback-staging:
+    desc: Rollback staging deployment
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_STAGING}} rollout undo deployment/mfr-care-staging
+    - task: rollout-status-staging
+    silent: false
+
+  rollback-prod:
+    desc: Rollback production deployment (with confirmation)
+    cmds:
+    - echo "⚠️  Rolling back PRODUCTION deployment"
+    - task: confirm
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_PROD}} rollout undo deployment/mfr-care-prod
+    - task: rollout-status-prod
+    silent: false
+
+  # ------------------------------------------------------------
+  # Utility Commands
+  # ------------------------------------------------------------
+
+  status:
+    desc: Show deployment status across all environments
+    cmds:
+    - echo "📊 Deployment Status:"
+    - echo ""
+    - echo "=== DEVELOPMENT ==="
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} get pods,deploy,svc -l env=development
+    - echo ""
+    - echo "=== STAGING ==="
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_STAGING}} get pods,deploy,svc -l env=staging 2>/dev/null || echo "  Not deployed"
+    - echo ""
+    - echo "=== PRODUCTION ==="
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_PROD}} get pods,deploy,svc -l env=production 2>/dev/null || echo "  Not deployed"
+    silent: false
+
+  logs-dev:
+    desc: Show logs from development pods
+    cmds:
+    - POD=$(kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} get pods -l app=mfr-care -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} logs -f $POD
+    silent: false
+
+  logs-staging:
+    desc: Show logs from staging pods
+    cmds:
+    - POD=$(kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_STAGING}} get pods -l app=mfr-care -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_STAGING}} logs -f $POD
+    silent: false
+
+  logs-prod:
+    desc: Show logs from production pods (with confirmation)
+    cmds:
+    - echo "⚠️  Viewing production logs"
+    - task: confirm
+    - POD=$(kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_PROD}} get pods -l app=mfr-care -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_PROD}} logs -f $POD
+    silent: false
+
+  port-forward-dev:
+    desc: Port forward development service to localhost:3000
+    cmds:
+    # - echo "🔌 Port forwarding: localhost:3000 -> mfr-care-dev:3000"
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} port-forward svc/mfr-care-dev 3000:3000
+    silent: false
+
+  describe-dev:
+    desc: Describe development deployment
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} describe deployment mfr-care-dev
+    silent: false
+
+  # ------------------------------------------------------------
+  # Cleanup Commands
+  # ------------------------------------------------------------
+
+  delete-dev:
+    desc: Delete development environment
+    cmds:
+    - echo "🗑️  Deleting DEV environment from cluster"
+    - task: confirm
+    - kubectl --kubeconfig={{.KUBECONFIG}} delete namespace {{.NAMESPACE_DEV}} --ignore-not-found
+    - echo "✅ DEV environment deleted"
+    silent: false
+
+  delete-staging:
+    desc: Delete staging environment
+    cmds:
+    - echo "🗑️  Deleting STAGING environment from cluster"
+    - task: confirm
+    - kubectl --kubeconfig={{.KUBECONFIG}} delete namespace {{.NAMESPACE_STAGING}} --ignore-not-found
+    - echo "✅ STAGING environment deleted"
+    silent: false
+
+  delete-prod:
+    desc: Delete production environment (CAREFUL!)
+    cmds:
+    - echo "🔥🔥🔥 DESTRUCTIVE ACTION 🔥🔥🔥"
+    - echo "Deleting PRODUCTION environment from cluster"
+    - echo "⚠️  THIS CANNOT BE UNDONE"
+    - task: confirm
+    - kubectl --kubeconfig={{.KUBECONFIG}} delete namespace {{.NAMESPACE_PROD}} --ignore-not-found
+    - echo "✅ PRODUCTION environment deleted"
+    silent: false
+
+  clean:
+    desc: Delete all environments
+    cmds:
+    - echo "🧹 Cleaning all environments..."
+    - task: delete-dev
+    - task: delete-staging
+    - task: delete-prod
+    - echo "✅ Cleanup complete"
+    silent: false
+
+  # ------------------------------------------------------------
+  # Quick Development Loop
+  # ------------------------------------------------------------
+
+  dev:
+    desc: Fast development loop (build + deploy to dev + port-forward)
+    cmds:
+    - task: build
+    - task: push-local
+    - task: deploy-dev
+    - echo ""
+    - echo "🎯 Development environment ready!"
+    #- echo "   Access: http://localhost:3000"
+    #- echo "   Logs:   task logs-dev"
+    - echo ""
+    - task: port-forward-dev
+    silent: false
+
+  watch-dev:
+    desc: Watch development pods in real-time
+    cmds:
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} get pods -w
+    silent: false
+
+  exec-dev:
+    desc: Open a shell in the development pod
+    cmds:
+    - POD=$(kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} get pods -l app=mfr-care -o jsonpath="{.items[0].metadata.name}")
+    - kubectl --kubeconfig={{.KUBECONFIG}} -n {{.NAMESPACE_DEV}} exec -it $POD -- /bin/sh
+    silent: false
+
+  # ------------------------------------------------------------
+  # Helper Functions
+  # ------------------------------------------------------------
+
+  confirm:
+    desc: Interactive confirmation prompt
+    cmds:
+    - |
+      echo -n "❓ Are you sure? [y/N] "
+      read -r response
+      if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        echo "❌ Cancelled"
+        exit 1
+      fi
+    silent: true
+    interactive: true
