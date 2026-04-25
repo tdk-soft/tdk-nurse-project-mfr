@@ -59,8 +59,8 @@ images:
 - name: tdksoft341/tdk-nurse-mfr
   newName: tdksoft341/tdk-nurse-mfr
   newTag: git-5e8d3f8f
-- name: tdksoft341/tdk-nurse-project-mfr
-  newName: tdksoft341/tdk-nurse-project-mfr
+- name: tdksoft341/tdk-nurse-mfr
+  newName: tdksoft341/tdk-nurse-mfr
 
 nameSuffix: -dev
 
