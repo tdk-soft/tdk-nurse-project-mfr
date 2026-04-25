@@ -24,12 +24,6 @@ labels:
   includeSelectors: true
   includeTemplates: true
 
-# Annotations transformer
-annotations:
-- kind: Deployment
-  pairs:
-    reloader.stakater.com/auto: "true" # Trigger rollout on ConfigMap changes
-
 # ConfigMapGenerator for dynamic configuration
 configMapGenerator:
 - name: app-config
