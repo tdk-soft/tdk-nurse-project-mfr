@@ -7,7 +7,7 @@ resources:
 - deployment.yaml
 - service.yaml
 - configmap.yaml
-- secret.yaml
+- secrets.yaml
 - serviceaccount.yaml
 
 # Common labels for all resources
