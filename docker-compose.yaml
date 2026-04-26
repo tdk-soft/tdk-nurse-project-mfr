@@ -1,18 +1,50 @@
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: mfr-care-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - mfr-network
+
   web:
     build:
       context: .
       dockerfile: docker/Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=${DATABASE_URL_DOCKER}
     restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./src:/app/src
-    # Healthcheck ensures the container is truly ready
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - ./prisma:/app/prisma
+    networks:
+      - mfr-network
+
+networks:
+  mfr-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
