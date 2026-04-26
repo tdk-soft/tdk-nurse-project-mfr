@@ -19,11 +19,14 @@ type Props = {
 export default function AppointmentForm({ serviceType }: Props) {
   const [selectedDate, setSelectedDate] = useState("")
   const [selectedTime, setSelectedTime] = useState("")
+  const [apiError, setApiError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentSchema),
@@ -35,23 +38,70 @@ export default function AppointmentForm({ serviceType }: Props) {
   const slots = selectedDate ? getAvailableSlots(selectedDate) : []
 
   const onSubmit = async (data: AppointmentFormData) => {
-    if (!selectedTime) return
+    setApiError(null)
+    setSuccess(false)
 
-    const payload = {
-      ...data,
-      time: selectedTime
+    if (!selectedTime) {
+      setApiError("Veuillez sélectionner un créneau")
+      return
     }
 
-    console.log("APPOINTMENT:", payload)
+    try {
+      const payload = {
+        ...data,
+        time: selectedTime
+      }
 
-    await fetch("/api/appointments", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    })
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json()
+
+        if (res.status === 409) {
+          setApiError("Ce créneau est déjà réservé.")
+        } else if (res.status === 400) {
+          setApiError("Données invalides.")
+        } else {
+          setApiError("Erreur serveur. Réessayez.")
+        }
+
+        return
+      }
+
+      // SUCCESS
+      setSuccess(true)
+      reset()
+      setSelectedDate("")
+      setSelectedTime("")
+
+    } catch (error) {
+      console.error(error)
+      setApiError("Erreur réseau.")
+    }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
+      {/* SUCCESS MESSAGE */}
+      {success && (
+        <div className="p-3 bg-green-100 text-green-700 rounded-lg">
+          ✅ Rendez-vous confirmé !
+        </div>
+      )}
+
+      {/* ERROR MESSAGE */}
+      {apiError && (
+        <div className="p-3 bg-red-100 text-red-700 rounded-lg">
+          {apiError}
+        </div>
+      )}
 
       {/* Nom */}
       <div>
@@ -89,19 +139,11 @@ export default function AppointmentForm({ serviceType }: Props) {
         )}
       </div>
 
-      {/* Adresse (uniquement soins à domicile) */}
+      {/* Adresse conditionnelle */}
       {serviceType === "soin" && (
         <div className="grid md:grid-cols-2 gap-4">
-          <input
-            {...register("address")}
-            placeholder="Adresse"
-            className="input"
-          />
-          <input
-            {...register("city")}
-            placeholder="Ville"
-            className="input"
-          />
+          <input {...register("address")} placeholder="Adresse" className="input" />
+          <input {...register("city")} placeholder="Ville" className="input" />
         </div>
       )}
 
@@ -153,7 +195,7 @@ export default function AppointmentForm({ serviceType }: Props) {
         className="input"
       />
 
-      {/* Hidden fields */}
+      {/* Hidden */}
       <input type="hidden" value={serviceType} {...register("serviceType")} />
 
       {/* Submit */}
