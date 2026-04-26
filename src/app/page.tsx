@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar } from '@/components/ui/navbar/Navbar';
 import { Hero } from '@/components/sections/hero/Hero';
 import { ServiceCard } from '@/components/ui/service-card/ServiceCard';
+import Link from "next/link"
 
 export default function HomePage() {
   return (
@@ -11,11 +12,11 @@ export default function HomePage() {
       <main>
         {/* HERO SECTION */}
         <Hero 
-          title="Soins infirmiers à domicile à Liège"
+          title="Soins infirmiers à Liège"
           subtitle="Medinko Fotso Rosine : Une expertise médicale humaine et professionnelle au service de votre santé, 7j/7 dans toute la région liégeoise."
         >
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href="tel:+32400000000" className="btn-primary">Prendre rendez-vous</a>
+            <Link href="/appointment" className="btn-primary">Prendre rendez-vous</Link>
             <a href="#services" className="btn-outline">Nos soins</a>
           </div>
         </Hero>

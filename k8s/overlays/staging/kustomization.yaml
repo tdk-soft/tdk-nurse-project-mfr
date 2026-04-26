@@ -1,14 +1,22 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
-  - ../../base
+- ../../base
+- namespace.yaml # Si tu l'as créé
+
+namespace: mfr-care-staging
+
+# On préfixe les noms des ressources pour éviter toute confusion
 namePrefix: staging-
+
 commonLabels:
-  env: staging
+  variant: staging
+  environment: staging
+
+images:
+- name: tdksoft341/tdk-nurse-mfr
+  newTag: staging-latest # Tag poussé par ta CI lors d'un merge sur 'develop' ou 'staging'
+
 patches:
-  - path: patches/resources.yaml
-configMapGenerator:
-  - name: app-config
-    literals:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://api.staging.tdksoft.com
+- path: patches/replicas.yaml # Tu peux réutiliser ton patch replicas avec 2 instances
