@@ -42,9 +42,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: mfr-care
+            name: mfr-care-dev
             port:
-              number: 80
+              number: 3000
   # Rule 2: WWW subdomain
   - host: www.mfr-care.tdksoftconsulting.de
     http:
@@ -53,6 +53,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: mfr-care
+            name: mfr-care-dev
             port:
-              number: 80
+              number: 3000
