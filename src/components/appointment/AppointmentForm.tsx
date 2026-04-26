@@ -61,7 +61,7 @@ export default function AppointmentForm({ serviceType }: Props) {
       })
 
       if (!res.ok) {
-        const errorData = await res.json()
+       // const errorData = await res.json()
 
         if (res.status === 409) {
           setApiError("Ce créneau est déjà réservé.")

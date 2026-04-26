@@ -2,6 +2,7 @@ id="api1"
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/infrastructure/prisma/client"
 import { appointmentSchema } from "@/domain/appointment.schema"
+import { sendAppointmentConfirmationEmail } from '@/lib/email/sendAppointmentEmail'
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,6 +40,14 @@ export async function POST(req: NextRequest) {
       data
     })
 
+    // 📧 EMAIL CONFIRMATION
+    await sendAppointmentConfirmationEmail({
+      email: body.email,
+      firstName: body.firstName,
+      date: body.date,
+      time: body.time
+    })
+
     return NextResponse.json(appointment, { status: 201 })
 
   } catch (error) {
@@ -49,4 +58,5 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     )
   }
+  
 }
