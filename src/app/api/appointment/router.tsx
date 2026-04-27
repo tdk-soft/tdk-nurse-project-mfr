@@ -1,8 +1,5 @@
-id="api1"
 import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/infrastructure/prisma/client"
 import { appointmentSchema } from "@/domain/appointment.schema"
-import { sendAppointmentConfirmationEmail } from '@/lib/email/sendAppointmentEmail'
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,38 +14,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
     }
-
-    const data = parsed.data
-
-    // 🔒 Vérification disponibilité
-    const existing = await prisma.appointment.findFirst({
-      where: {
-        date: data.date,
-        time: data.time
-      }
-    })
-
-    if (existing) {
-      return NextResponse.json(
-        { error: "Créneau déjà réservé" },
-        { status: 409 }
-      )
-    }
-
-    // 💾 Création
-    const appointment = await prisma.appointment.create({
-      data
-    })
-
-    // 📧 EMAIL CONFIRMATION
-    await sendAppointmentConfirmationEmail({
-      email: body.email,
-      firstName: body.firstName,
-      date: body.date,
-      time: body.time
-    })
-
-    return NextResponse.json(appointment, { status: 201 })
 
   } catch (error) {
     console.error(error)
