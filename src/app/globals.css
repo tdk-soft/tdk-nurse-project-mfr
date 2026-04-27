@@ -39,5 +39,3 @@ body {
 .input-error {
   @apply border-red-500 focus:ring-red-500;
 }
-
-className={`input ${errors.name ? "input-error" : ""}`}

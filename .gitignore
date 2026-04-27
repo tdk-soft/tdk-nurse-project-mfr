@@ -36,3 +36,23 @@ yarn-error.log*
 .vscode/
 .idea/
 *.swp
+/src/generated/prisma
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Dépendances
+node_modules/
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+
+# Docker
+postgres_data/
+
+# Logs
+*.log
+npm-debug.log*

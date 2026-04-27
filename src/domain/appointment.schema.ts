@@ -16,4 +16,4 @@ export const appointmentSchema = z.object({
   message: z.string().optional()
 })
 
-export type AppointmentFormData = z.infer<typeof appointmentSchema>S
+export type AppointmentFormData = z.infer<typeof appointmentSchema>
