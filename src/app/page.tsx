@@ -58,7 +58,7 @@ export default function HomePage() {
         <section className="py-20 bg-sky-900 text-white">
           <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl">
-              <h2 className="text-3xl font-bold mb-6">Zone d`&apos;`intervention à Liège</h2>
+              <h2 className="text-3xl font-bold mb-6">Zone d&#39;intervention à Liège</h2>
               <p className="text-sky-100 text-lg mb-8">
                 Basée à Liège, Medinko se déplace rapidement dans toute la région : 
                 <span className="font-semibold text-white"> Herstal, Ans, Grivegnée, Angleur, Chênée et Liège-Centre.</span>
