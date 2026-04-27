@@ -1,17 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-// Modèle pour les patients
 model Patient {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -24,7 +18,6 @@ model Patient {
   appointments Appointment[]
 }
 
-// Modèle pour les rendez-vous
 model Appointment {
   id          String   @id @default(uuid())
   patientId   String
@@ -40,7 +33,6 @@ model Appointment {
   @@index([startTime])
 }
 
-// Énumération pour le statut du rendez-vous
 enum Status {
   SCHEDULED
   CONFIRMED
