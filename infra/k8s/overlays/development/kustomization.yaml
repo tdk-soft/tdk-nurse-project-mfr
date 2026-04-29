@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:infra/k8s/overlays/development/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -100,3 +101,115 @@ configMapGenerator:
   - LOG_LEVEL=debug
   - CORS_ORIGIN=http://localhost:3001
   name: app-config
+=======
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: mfr-care-dev
+
+resources:
+- ../../base
+- namespace.yaml
+  # Replace imagePullPolicy to Always for development
+  # Remove affinity for dev environment
+  # Add debug port for development
+  # Increase log verbosity
+  # Replace imagePullPolicy to Always for development
+  # Remove affinity for dev environment
+  # Add debug port for development
+  # Increase log verbosity
+  # Replace imagePullPolicy to Always for development
+  # Remove affinity for dev environment
+  # Add debug port for development
+  # Increase log verbosity
+  # Replace imagePullPolicy to Always for development
+  # Remove affinity for dev environment
+  # Add debug port for development
+  # Increase log verbosity
+  # Replace imagePullPolicy to Always for development
+  # Remove affinity for dev environment
+  # Add debug port for development
+  # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+    # Replace imagePullPolicy to Always for development
+    # Remove affinity for dev environment
+    # Add debug port for development
+    # Increase log verbosity
+patches:
+- path: patches/replicas.yaml
+- path: patches/resources-dev.yaml
+- path: patches/service-dev.yaml
+- patch: |
+    # Replace imagePullPolicy to Always for development
+    - op: replace
+      path: /spec/template/spec/containers/0/imagePullPolicy
+      value: Always
+    # Remove affinity for dev environment
+    - op: remove
+      path: /spec/template/spec/affinity
+    # Add debug port for development
+    - op: add
+      path: /spec/template/spec/containers/0/ports/-
+      value:
+        name: debug
+        containerPort: 9229
+        protocol: TCP
+    # Increase log verbosity
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+      - name: DEBUG
+        value: "true"
+      - name: LOG_LEVEL
+        value: debug
+  target:
+    kind: Deployment
+    name: mfr-care
+    version: v1
+
+# Development-specific images with commit SHA (NO LATEST)
+images:
+- name: tdksoft341/tdk-nurse-mfr
+  newName: tdksoft341/tdk-nurse-mfr
+  newTag: git-7eb96f1e
+
+nameSuffix: -dev
+
+commonLabels:
+  env: development
+  environment: dev
+  managed-by: argocd
+  team: backend
+
+# Merge development config overrides
+configMapGenerator:
+- behavior: merge
+  literals:
+  - NODE_ENV=development
+  - LOG_LEVEL=debug
+  - CORS_ORIGIN=http://localhost:3001
+  name: app-config
+>>>>>>> Stashed changes:k8s/overlays/development/kustomization.yaml
