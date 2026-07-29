@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- MindfulTrip — Booking / Reservation -->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0A192F" />
+  <title>Réserver votre Escapade Premium | MindfulTrip</title>
+  <meta name="description" content="Réservez votre escapade MindfulTrip en quelques minutes : date, voyageurs, options bien-être et paiement sécurisé. Paris — Bien-être & Culture, 31 juillet 2026, dès 290€." />
+  <link rel="canonical" href="https://www.mindfultrip.nexgencare.org/booking.html" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu principal</a>
+  <header class="site-header" data-header>
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="MindfulTrip — accueil"><span class="brand__mark">Mindful<b>Trip</b></span><span class="brand__tag">Évasion &amp; Élégance</span></a>
+      <nav class="nav" id="nav" aria-label="Navigation principale">
+        <a href="trips.html"><span data-i18n-fr>Escapades</span><span data-i18n-en>Experiences</span></a>
+        <a href="wellness.html"><span data-i18n-fr>Philosophie</span><span data-i18n-en>Philosophy</span></a>
+        <a href="about.html"><span data-i18n-fr>À propos</span><span data-i18n-en>About</span></a>
+        <a href="groups.html"><span data-i18n-fr>Groupes &amp; Entreprises</span><span data-i18n-en>Private &amp; Corporate</span></a>
+        <a href="journal.html">Journal</a>
+        <a href="contact.html">Contact</a>
+        <span class="lang-switch" role="group" aria-label="Langue / Language"><button type="button" data-lang="fr" aria-pressed="true">FR</button><span aria-hidden="true">·</span><button type="button" data-lang="en" aria-pressed="false">EN</button></span>
+        <a class="btn nav__cta" href="booking.html" aria-current="page"><span data-i18n-fr>Réserver</span><span data-i18n-en>Book Now</span></a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main" style="padding-top:var(--header-h)">
+    <section class="section section--tight section--cream">
+      <div class="container">
+        <span class="eyebrow" data-i18n-fr>Réservation</span><span class="eyebrow hidden" data-i18n-en>Booking</span>
+        <h1 style="font-size:var(--fs-h2)" data-i18n-fr>Réservez votre place</h1><h1 style="font-size:var(--fs-h2)" class="hidden" data-i18n-en>Reserve your seat</h1>
+        <!-- Step indicator -->
+        <ol style="display:flex;flex-wrap:wrap;gap:0.5rem 1.5rem;margin:1.2rem 0 0;padding:0;list-style:none;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted)">
+          <li><span class="gold" style="font-family:var(--font-serif);font-size:1rem">1</span> <span data-i18n-fr>Escapade</span><span data-i18n-en>Escape</span></li>
+          <li><span class="gold" style="font-family:var(--font-serif);font-size:1rem">2</span> <span data-i18n-fr>Voyageurs</span><span data-i18n-en>Guests</span></li>
+          <li><span class="gold" style="font-family:var(--font-serif);font-size:1rem">3</span> <span data-i18n-fr>Coordonnées</span><span data-i18n-en>Details</span></li>
+          <li><span class="gold" style="font-family:var(--font-serif);font-size:1rem">4</span> <span data-i18n-fr>Paiement</span><span data-i18n-en>Payment</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="split" style="grid-template-columns:1.6fr 1fr;align-items:start">
+          <!-- Booking form -->
+          <div class="form-panel" data-reveal>
+            <!-- data-booking wires the live price calculator in main.js. Base price in data-base-price. -->
+            <!-- On deploy: point action to Formspree/Web3Forms/Netlify or your booking engine + Stripe. -->
+            <form data-booking data-base-price="290" data-demo-form action="https://formspree.io/f/your-id" method="POST" novalidate>
+
+              <!-- Step 1: escape -->
+              <fieldset style="border:0;padding:0;margin:0 0 var(--space-4)">
+                <legend class="eyebrow" style="padding:0">1 · <span data-i18n-fr>Votre escapade</span><span data-i18n-en>Your escape</span></legend>
+                <div class="field-row">
+                  <div class="field"><label for="b-trip" data-i18n-fr>Escapade</label><label for="b-trip" class="hidden" data-i18n-en>Escape</label>
+                    <select id="b-trip" name="trip"><option>Paris — Bien-être &amp; Culture</option></select>
+                  </div>
+                  <div class="field"><label for="b-date" data-i18n-fr>Date de départ</label><label for="b-date" class="hidden" data-i18n-en>Departure date</label>
+                    <select id="b-date" name="date"><option value="2026-07-31" selected>Vendredi 31 juillet 2026</option></select>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- Step 2: guests -->
+              <fieldset style="border:0;padding:0;margin:0 0 var(--space-4)">
+                <legend class="eyebrow" style="padding:0">2 · <span data-i18n-fr>Voyageurs</span><span data-i18n-en>Guests</span></legend>
+                <div class="field" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+                  <span><strong data-i18n-fr>Nombre de voyageurs</strong><strong class="hidden" data-i18n-en>Number of guests</strong><br /><span class="form-note" data-i18n-fr>290€ / personne · 16 max</span><span class="form-note hidden" data-i18n-en>€290 / person · max 16</span></span>
+                  <span class="stepper">
+                    <button type="button" data-step="down" aria-label="Retirer un voyageur">−</button>
+                    <input type="number" name="passengers" value="2" min="1" max="16" aria-label="Nombre de voyageurs" />
+                    <button type="button" data-step="up" aria-label="Ajouter un voyageur">+</button>
+                  </span>
+                </div>
+
+                <p style="font-weight:600;color:var(--navy);margin:1.2rem 0 0.6rem;font-size:0.9rem" data-i18n-fr>Options bien-être (par personne)</p>
+                <p style="font-weight:600;color:var(--navy);margin:1.2rem 0 0.6rem;font-size:0.9rem" class="hidden" data-i18n-en>Wellness add-ons (per person)</p>
+                <div class="grid" style="gap:0.75rem">
+                  <label class="option-card"><input type="checkbox" data-extra="45" name="extra_meditation" />
+                    <span><span class="option-card__title" data-i18n-fr>Séance de méditation privée</span><span class="option-card__title hidden" data-i18n-en>Private meditation session</span><br /><span class="form-note" data-i18n-fr>30 min face à la Seine, praticienne dédiée</span><span class="form-note hidden" data-i18n-en>30 min facing the Seine, dedicated practitioner</span></span>
+                    <span class="option-card__price">+45€</span></label>
+                  <label class="option-card"><input type="checkbox" data-extra="60" name="extra_tasting" />
+                    <span><span class="option-card__title" data-i18n-fr>Dégustation sensorielle premium</span><span class="option-card__title hidden" data-i18n-en>Premium sensory tasting</span><br /><span class="form-note" data-i18n-fr>Accord mets &amp; saveurs, sommelier</span><span class="form-note hidden" data-i18n-en>Food &amp; flavour pairing, sommelier</span></span>
+                    <span class="option-card__price">+60€</span></label>
+                  <label class="option-card"><input type="checkbox" data-extra="35" name="extra_photo" />
+                    <span><span class="option-card__title" data-i18n-fr>Reportage photo souvenir</span><span class="option-card__title hidden" data-i18n-en>Souvenir photo report</span><br /><span class="form-note" data-i18n-fr>20 photos retouchées de votre journée</span><span class="form-note hidden" data-i18n-en>20 edited photos of your day</span></span>
+                    <span class="option-card__price">+35€</span></label>
+                </div>
+              </fieldset>
+
+              <!-- Step 3: details -->
+              <fieldset style="border:0;padding:0;margin:0 0 var(--space-4)">
+                <legend class="eyebrow" style="padding:0">3 · <span data-i18n-fr>Vos coordonnées</span><span data-i18n-en>Your details</span></legend>
+                <div class="field-row">
+                  <div class="field"><label for="b-first" data-i18n-fr>Prénom</label><label for="b-first" class="hidden" data-i18n-en>First name</label><input class="input" id="b-first" name="first_name" required autocomplete="given-name" /></div>
+                  <div class="field"><label for="b-last" data-i18n-fr>Nom</label><label for="b-last" class="hidden" data-i18n-en>Last name</label><input class="input" id="b-last" name="last_name" required autocomplete="family-name" /></div>
+                </div>
+                <div class="field-row">
+                  <div class="field"><label for="b-email">Email</label><input class="input" id="b-email" name="email" type="email" required autocomplete="email" /></div>
+                  <div class="field"><label for="b-phone" data-i18n-fr>Téléphone</label><label for="b-phone" class="hidden" data-i18n-en>Phone</label><input class="input" id="b-phone" name="phone" type="tel" required autocomplete="tel" /></div>
+                </div>
+                <div class="field"><label for="b-diet" data-i18n-fr>Régime alimentaire / demandes particulières</label><label for="b-diet" class="hidden" data-i18n-en>Dietary needs / special requests</label><textarea id="b-diet" name="notes" placeholder="Végétarien, sans gluten, occasion spéciale…" style="min-height:90px"></textarea></div>
+              </fieldset>
+
+              <!-- Step 4: payment placeholder -->
+              <fieldset style="border:0;padding:0;margin:0">
+                <legend class="eyebrow" style="padding:0">4 · <span data-i18n-fr>Paiement</span><span data-i18n-en>Payment</span></legend>
+                <div style="padding:1.2rem;border:1px dashed var(--line-gold);border-radius:var(--radius);background:rgba(201,168,76,0.06)">
+                  <p class="form-note mb-0" data-i18n-fr><strong>Espace réservé au paiement.</strong> Intégrez ici Stripe Checkout, Mollie ou PayPal. Le paiement sécurisé sera demandé après validation. Aucun débit à cette étape (démo).</p>
+                  <p class="form-note mb-0 hidden" data-i18n-en><strong>Payment placeholder.</strong> Integrate Stripe Checkout, Mollie or PayPal here. Secure payment is requested after confirmation. No charge at this step (demo).</p>
+                </div>
+                <label class="option-card mt-3" style="margin-top:1rem"><input type="checkbox" name="terms" required />
+                  <span class="form-note" data-i18n-fr>J'accepte les conditions générales et la politique de confidentialité.</span><span class="form-note hidden" data-i18n-en>I accept the terms and the privacy policy.</span></label>
+                <button class="btn btn--block btn--lg mt-3" type="submit" style="margin-top:1.2rem"><span data-i18n-fr>Confirmer ma réservation</span><span data-i18n-en>Confirm my booking</span></button>
+                <p class="form-note text-center mt-3" data-i18n-fr>🔒 Paiement sécurisé · Annulation gratuite jusqu'au 17 juillet 2026</p>
+                <p class="form-note text-center mt-3 hidden" data-i18n-en>🔒 Secure payment · Free cancellation until 17 July 2026</p>
+              </fieldset>
+            </form>
+
+            <div class="form-success">
+              <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m8 12 2.5 2.5L16 9"/></svg></div>
+              <h3 data-i18n-fr>Réservation confirmée ✨</h3><h3 class="hidden" data-i18n-en>Booking confirmed ✨</h3>
+              <p data-i18n-fr>Merci ! Un email de confirmation avec les détails de votre escapade vient de vous être envoyé. À très bientôt sur la route.</p>
+              <p class="hidden" data-i18n-en>Thank you! A confirmation email with your escape details is on its way. See you on the road.</p>
+              <a class="btn mt-3" href="index.html"><span data-i18n-fr>Retour à l'accueil</span><span data-i18n-en>Back to home</span></a>
+            </div>
+          </div>
+
+          <!-- Live summary -->
+          <aside>
+            <div class="form-panel summary" aria-label="Récapitulatif" aria-live="polite">
+              <div class="trip-card__media" style="aspect-ratio:16/10;border-radius:var(--radius);overflow:hidden;margin-bottom:1rem">
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80" alt="Paris au crépuscule" loading="lazy" width="600" height="375" />
+              </div>
+              <h4 class="mb-0">Paris — Bien-être &amp; Culture</h4>
+              <p class="form-note" style="margin:0.2rem 0 1rem">31 juillet 2026 · Liège → Paris</p>
+
+              <div class="summary__row"><span data-i18n-fr>Prix par personne</span><span data-i18n-en>Price per person</span><span data-sum-base>290€ × 2</span></div>
+              <div class="summary__row"><span data-i18n-fr>Sous-total escapade</span><span data-i18n-en>Escape subtotal</span><span data-sum-base-total>580€</span></div>
+              <div class="summary__row"><span data-i18n-fr>Options bien-être</span><span data-i18n-en>Wellness add-ons</span><span data-sum-extras>0€</span></div>
+              <div class="summary__total">
+                <span><strong data-i18n-fr>Total</strong><strong class="hidden" data-i18n-en>Total</strong><br /><span class="form-note"><span data-sum-pax>2</span> <span data-i18n-fr>voyageurs · tout inclus</span><span data-i18n-en>guests · all-inclusive</span></span></span>
+                <span class="amount" data-sum-total>580€</span>
+              </div>
+              <ul class="checklist mt-3" style="gap:0.5rem;font-size:0.85rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr>Bus VIP, guide, déjeuner &amp; assurance inclus</span><span data-i18n-en>VIP coach, guide, lunch &amp; insurance included</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr>Annulation gratuite jusqu'au J-14</span><span data-i18n-en>Free cancellation up to D-14</span></li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer></footer>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/partials.js" defer></script>
+</body>
+</html>

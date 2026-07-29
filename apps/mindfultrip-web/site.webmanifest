@@ -1,0 +1,13 @@
+{
+  "name": "MindfulTrip — Évasion & Élégance",
+  "short_name": "MindfulTrip",
+  "description": "Escapades culturelles et bien-être premium d'une journée au départ de la Belgique.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A192F",
+  "theme_color": "#0A192F",
+  "lang": "fr",
+  "icons": [
+    { "src": "/assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

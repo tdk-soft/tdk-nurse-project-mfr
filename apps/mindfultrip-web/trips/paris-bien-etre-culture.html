@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!--
+  MindfulTrip — Trip Detail Page
+  Paris "Bien-être & Culture" · 31 July 2026
+  The most conversion-critical page: gallery, hour-by-hour itinerary,
+  what's-included, testimonials, FAQ, sticky booking rail + mobile CTA.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0A192F" />
+
+  <title>Paris — Bien-être &amp; Culture · Escapade Premium d'une Journée | MindfulTrip</title>
+  <meta name="description" content="Escapade d'une journée à Paris au départ de Liège-Guillemins, le 31 juillet 2026. Bus VIP, guide culturel privé, moment bien-être, déjeuner d'exception. Tout inclus, dès 290€. Groupe de 16 maximum." />
+  <link rel="canonical" href="https://www.mindfultrip.nexgencare.org/trips/paris-bien-etre-culture.html" />
+
+  <meta property="og:type" content="product" />
+  <meta property="og:title" content="Paris — Bien-être & Culture · Escapade Premium d'une Journée" />
+  <meta property="og:description" content="Bus VIP, guide privé, moment bien-être et déjeuner d'exception. Départ Liège-Guillemins, 31 juillet 2026. Tout inclus dès 290€." />
+  <meta property="og:url" content="https://www.mindfultrip.nexgencare.org/trips/paris-bien-etre-culture.html" />
+  <meta property="og:image" content="https://www.mindfultrip.nexgencare.org/assets/img/og-paris.jpg" />
+  <meta property="og:locale" content="fr_BE" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+
+  <!-- JSON-LD: Event + Product offer + breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Event",
+        "name": "Paris — Bien-être & Culture",
+        "description": "Escapade culturelle et bien-être d'une journée à Paris au départ de Liège-Guillemins : bus VIP, guide privé, moment de pleine conscience et déjeuner d'exception.",
+        "startDate": "2026-07-31T06:30:00+02:00",
+        "endDate": "2026-07-31T22:30:00+02:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "image": "https://www.mindfultrip.nexgencare.org/assets/img/og-paris.jpg",
+        "location": {
+          "@type": "Place",
+          "name": "Gare de Liège-Guillemins",
+          "address": { "@type": "PostalAddress", "addressLocality": "Liège", "addressCountry": "BE" }
+        },
+        "organizer": { "@type": "Organization", "name": "MindfulTrip", "url": "https://www.mindfultrip.nexgencare.org/" },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://www.mindfultrip.nexgencare.org/booking.html",
+          "price": "290",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2026-06-01T00:00:00+02:00"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.mindfultrip.nexgencare.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Escapades", "item": "https://www.mindfultrip.nexgencare.org/trips.html" },
+          { "@type": "ListItem", "position": 3, "name": "Paris — Bien-être & Culture" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Aller au contenu principal</a>
+
+  <!-- ============================ HEADER ============================ -->
+  <header class="site-header" data-header>
+    <div class="container">
+      <a class="brand" href="../index.html" aria-label="MindfulTrip — accueil">
+        <span class="brand__mark">Mindful<b>Trip</b></span>
+        <span class="brand__tag">Évasion &amp; Élégance</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Navigation principale">
+        <a href="../trips.html" aria-current="page"><span data-i18n-fr>Escapades</span><span data-i18n-en>Experiences</span></a>
+        <a href="../wellness.html"><span data-i18n-fr>Philosophie</span><span data-i18n-en>Philosophy</span></a>
+        <a href="../about.html"><span data-i18n-fr>À propos</span><span data-i18n-en>About</span></a>
+        <a href="../groups.html"><span data-i18n-fr>Groupes &amp; Entreprises</span><span data-i18n-en>Private &amp; Corporate</span></a>
+        <a href="../journal.html">Journal</a>
+        <a href="../contact.html">Contact</a>
+        <span class="lang-switch" role="group" aria-label="Langue / Language">
+          <button type="button" data-lang="fr" aria-pressed="true">FR</button><span aria-hidden="true">·</span><button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </span>
+        <a class="btn nav__cta" href="../booking.html"><span data-i18n-fr>Réserver</span><span data-i18n-en>Book Now</span></a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===================== PAGE HERO ===================== -->
+    <section class="page-hero" aria-label="Paris — Bien-être & Culture">
+      <div class="page-hero__media">
+        <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=2000&q=80"
+             alt="La Tour Eiffel et les jardins parisiens sous une lumière dorée" loading="eager" fetchpriority="high" width="2000" height="1333" />
+      </div>
+      <div class="page-hero__scrim"></div>
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <a href="../index.html">Accueil</a><span aria-hidden="true">/</span>
+          <a href="../trips.html">Escapades</a><span aria-hidden="true">/</span>
+          <span data-i18n-fr>Paris — Bien-être &amp; Culture</span><span data-i18n-en>Paris — Wellness &amp; Culture</span>
+        </nav>
+        <span class="eyebrow eyebrow--light">Escapade signature · Vendredi 31 juillet 2026</span>
+        <h1>
+          <span data-i18n-fr>Paris, <span class="serif-accent">Bien-être &amp; Culture</span></span>
+          <span data-i18n-en>Paris, <span class="serif-accent">Wellness &amp; Culture</span></span>
+        </h1>
+        <p class="lead">
+          <span data-i18n-fr>Une journée d'exception dans la Ville Lumière — culture, pleine conscience et gastronomie, sans jamais courir.</span>
+          <span data-i18n-en>An exceptional day in the City of Light — culture, mindfulness and gastronomy, never rushed.</span>
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.4rem">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 6h30 → 22h30</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 20a5 5 0 0 0-10 0"/><circle cx="12" cy="8" r="4"/></svg> <span data-i18n-fr>16 voyageurs max</span><span data-i18n-en>Max 16 guests</span></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M5 7l1 13h12l1-13"/></svg> <span data-i18n-fr>Bus VIP</span><span data-i18n-en>VIP coach</span></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg> <span data-i18n-fr>Tout inclus</span><span data-i18n-en>All-inclusive</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sentinel for mobile sticky CTA visibility -->
+    <span data-cta-sentinel aria-hidden="true"></span>
+
+    <!-- ===================== BODY: content + booking rail ===================== -->
+    <section class="section">
+      <div class="container">
+        <div class="split" style="grid-template-columns: 1.7fr 1fr; align-items:start">
+          <!-- ---------- LEFT: editorial content ---------- -->
+          <div>
+            <!-- Intro -->
+            <div data-reveal>
+              <span class="eyebrow">L'expérience</span>
+              <h2 data-i18n-fr>Paris, comme vous ne l'avez jamais ressenti</h2>
+              <h2 class="hidden" data-i18n-en>Paris, as you've never felt it</h2>
+              <hr class="rule" />
+              <p data-i18n-fr>Oubliez les files d'attente et les itinéraires pressés. Notre escapade parisienne est pensée comme une respiration : un guide privé qui raconte plutôt qu'il ne récite, des lieux choisis pour leur âme, et des pauses où le temps s'arrête vraiment. Vous partez à l'aube, vous rentrez le soir — et entre les deux, une journée entière rien que pour vous.</p>
+              <p data-i18n-en>Forget the queues and the hurried itineraries. Our Paris escape is designed like a breath: a private guide who tells rather than recites, places chosen for their soul, and pauses where time truly stops. You leave at dawn, you return by evening — and in between, a full day that is entirely yours.</p>
+            </div>
+
+            <!-- Gallery -->
+            <div class="mt-4" data-reveal>
+              <div class="gallery">
+                <figure class="span-2 row-2" data-lb-src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80" data-lb-alt="Paris et la Seine au crépuscule">
+                  <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80" alt="Paris et la Seine au crépuscule" loading="lazy" width="900" height="900" />
+                </figure>
+                <figure data-lb-src="https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1400&q=80" data-lb-alt="Le Louvre et sa pyramide">
+                  <img src="https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=600&q=80" alt="Le Louvre et sa pyramide de verre" loading="lazy" width="600" height="400" />
+                </figure>
+                <figure data-lb-src="https://images.unsplash.com/photo-1508050919630-b135583b29ab?auto=format&fit=crop&w=1400&q=80" data-lb-alt="Café parisien élégant">
+                  <img src="https://images.unsplash.com/photo-1508050919630-b135583b29ab?auto=format&fit=crop&w=600&q=80" alt="Terrasse d'un café parisien élégant" loading="lazy" width="600" height="400" />
+                </figure>
+                <figure data-lb-src="https://images.unsplash.com/photo-1550340499-a6c60fc8287c?auto=format&fit=crop&w=1400&q=80" data-lb-alt="Assiette gastronomique">
+                  <img src="https://images.unsplash.com/photo-1550340499-a6c60fc8287c?auto=format&fit=crop&w=600&q=80" alt="Assiette gastronomique dressée avec finesse" loading="lazy" width="600" height="400" />
+                </figure>
+                <figure data-lb-src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=80" data-lb-alt="Méditation sereine">
+                  <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Moment de méditation serein" loading="lazy" width="600" height="400" />
+                </figure>
+              </div>
+              <p class="form-note mt-3"><span data-i18n-fr>Cliquez sur une image pour l'agrandir.</span><span data-i18n-en>Click an image to enlarge.</span></p>
+            </div>
+
+            <!-- Itinerary timeline -->
+            <div class="mt-4" data-reveal id="itinerary">
+              <span class="eyebrow">Heure par heure</span>
+              <h3 data-i18n-fr>Le déroulé de votre journée</h3>
+              <h3 class="hidden" data-i18n-en>Your day, hour by hour</h3>
+              <hr class="rule" />
+              <div class="timeline mt-3">
+                <div class="timeline__item">
+                  <div class="timeline__time">6:30</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Accueil VIP — Liège-Guillemins</h4><h4 class="hidden" data-i18n-en>VIP welcome — Liège-Guillemins</h4>
+                    <p data-i18n-fr>Café de spécialité et viennoiseries à l'embarquement. Installation en bus VIP : sièges cuir, Wi-Fi, plaids et silence choisi.</p>
+                    <p data-i18n-en>Specialty coffee and pastries on boarding. Settle into the VIP coach: leather seats, Wi-Fi, blankets and chosen quiet.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">6:45</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Sur la route — réveil en douceur</h4><h4 class="hidden" data-i18n-en>On the road — a gentle awakening</h4>
+                    <p data-i18n-fr>Méditation guidée optionnelle (10 min) pour ouvrir la journée, puis temps libre : lecture, repos ou paysage.</p>
+                    <p data-i18n-en>Optional guided meditation (10 min) to open the day, then free time: reading, rest, or the passing landscape.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">9:30</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Arrivée à Paris &amp; visite culturelle privée</h4><h4 class="hidden" data-i18n-en>Arrival in Paris &amp; private cultural tour</h4>
+                    <p data-i18n-fr>Retrouvez votre guide passionné pour une découverte à pied des trésors parisiens — récits, anecdotes et regards d'initié, loin de la foule.</p>
+                    <p data-i18n-en>Meet your passionate guide for a walking discovery of Paris's treasures — stories, anecdotes and insider perspectives, away from the crowds.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">12:30</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Déjeuner d'exception</h4><h4 class="hidden" data-i18n-en>Fine dining lunch</h4>
+                    <p data-i18n-fr>Table sélectionnée pour sa cuisine et son cadre. Menu de saison, options végétariennes et sans gluten sur demande.</p>
+                    <p data-i18n-en>A table chosen for its cuisine and setting. Seasonal menu; vegetarian and gluten-free options on request.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">14:30</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Moment bien-être &amp; temps libre</h4><h4 class="hidden" data-i18n-en>Wellness moment &amp; free time</h4>
+                    <p data-i18n-fr>Au choix : séance de méditation face à la Seine, dégustation sensorielle, ou flânerie libre dans un quartier confidentiel.</p>
+                    <p data-i18n-en>Your choice: a meditation session facing the Seine, a sensory tasting, or a free stroll through a hidden quarter.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">18:00</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Retour vers Liège</h4><h4 class="hidden" data-i18n-en>Return to Liège</h4>
+                    <p data-i18n-fr>Embarquement, coucher de soleil sur la route et collation gourmande à bord. Un dernier temps de calme.</p>
+                    <p data-i18n-en>Boarding, sunset on the road and a gourmet snack on board. One last moment of calm.</p>
+                  </div>
+                </div>
+                <div class="timeline__item">
+                  <div class="timeline__time">~22:30</div>
+                  <div class="timeline__body">
+                    <h4 data-i18n-fr>Arrivée — Liège-Guillemins</h4><h4 class="hidden" data-i18n-en>Arrival — Liège-Guillemins</h4>
+                    <p data-i18n-fr>Retour serein à votre point de départ, la tête pleine de souvenirs.</p>
+                    <p data-i18n-en>A serene return to your starting point, memories in hand.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- What's included / excluded -->
+            <div class="mt-4" data-reveal>
+              <span class="eyebrow" data-i18n-fr>Sans surprise</span><span class="eyebrow hidden" data-i18n-en>No surprises</span>
+              <h3 data-i18n-fr>Ce qui est compris</h3><h3 class="hidden" data-i18n-en>What's included</h3>
+              <hr class="rule" />
+              <div class="split" style="align-items:start;gap:2.5rem">
+                <ul class="checklist">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr>Transport aller-retour en <strong>bus VIP</strong> (sièges cuir, Wi-Fi, WC)</span><span data-i18n-en>Round-trip <strong>VIP coach</strong> (leather seats, Wi-Fi, WC)</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr><strong>Guide culturel privé</strong> francophone (groupe de 16 max)</span><span data-i18n-en><strong>Private cultural guide</strong> (max 16 guests)</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr><strong>Activité bien-être</strong> (méditation guidée ou dégustation)</span><span data-i18n-en><strong>Wellness activity</strong> (guided meditation or tasting)</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr><strong>Déjeuner d'exception</strong> + café d'accueil + collation retour</span><span data-i18n-en><strong>Fine dining lunch</strong> + welcome coffee + return snack</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n-fr><strong>Assurance annulation</strong> &amp; assistance voyage</span><span data-i18n-en><strong>Cancellation insurance</strong> &amp; travel assistance</span></li>
+                </ul>
+                <ul class="checklist checklist--excluded">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n-fr>Dépenses personnelles &amp; achats souvenirs</span><span data-i18n-en>Personal expenses &amp; souvenir purchases</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n-fr>Boissons hors menu déjeuner</span><span data-i18n-en>Drinks beyond the lunch menu</span></li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n-fr>Pourboires (à votre discrétion)</span><span data-i18n-en>Gratuities (at your discretion)</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="mt-4" data-reveal>
+              <span class="eyebrow">Avis voyageurs</span>
+              <h3 data-i18n-fr>Ce qu'ils en ont pensé</h3><h3 class="hidden" data-i18n-en>What they thought</h3>
+              <hr class="rule" />
+              <div class="grid grid-2 mt-3">
+                <figure class="testimonial">
+                  <div class="testimonial__stars" aria-label="5 sur 5">★★★★★</div>
+                  <blockquote class="testimonial__quote" data-i18n-fr>« Le rythme parfait. Nous avons vu Paris et, pour une fois, nous l'avons vraiment vécu. »</blockquote>
+                  <blockquote class="testimonial__quote hidden" data-i18n-en>"The perfect pace. We saw Paris and, for once, truly lived it."</blockquote>
+                  <figcaption class="testimonial__who">
+                    <img class="testimonial__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" alt="" loading="lazy" width="88" height="88" />
+                    <span><span class="testimonial__name">Camille R.</span><br /><span class="testimonial__role">Bruxelles · juin 2026</span></span>
+                  </figcaption>
+                </figure>
+                <figure class="testimonial">
+                  <div class="testimonial__stars" aria-label="5 sur 5">★★★★★</div>
+                  <blockquote class="testimonial__quote" data-i18n-fr>« La méditation face à la Seine : un moment que je n'oublierai pas. Merci pour cette délicatesse. »</blockquote>
+                  <blockquote class="testimonial__quote hidden" data-i18n-en>"Meditation facing the Seine: a moment I won't forget. Thank you for such delicacy."</blockquote>
+                  <figcaption class="testimonial__who">
+                    <img class="testimonial__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80" alt="" loading="lazy" width="88" height="88" />
+                    <span><span class="testimonial__name">Sophie D.</span><br /><span class="testimonial__role">Anvers · mai 2026</span></span>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="mt-4" data-reveal>
+              <span class="eyebrow">Questions fréquentes</span>
+              <h3 data-i18n-fr>Bon à savoir</h3><h3 class="hidden" data-i18n-en>Good to know</h3>
+              <hr class="rule" />
+              <div class="accordion mt-3">
+                <div class="accordion__item">
+                  <button class="accordion__trigger" aria-expanded="false" aria-controls="faq1">
+                    <span data-i18n-fr>Le point de départ est-il toujours Liège-Guillemins ?</span><span data-i18n-en>Is departure always from Liège-Guillemins?</span>
+                    <span class="plus" aria-hidden="true"></span>
+                  </button>
+                  <div class="accordion__panel" id="faq1"><div class="accordion__panel-inner">
+                    <span data-i18n-fr>Oui. Le départ et le retour s'effectuent à la gare de Liège-Guillemins, facilement accessible en train et en voiture (parking à proximité). Rendez-vous 15 minutes avant le départ.</span>
+                    <span data-i18n-en>Yes. Departure and return are at Liège-Guillemins station, easily reached by train and car (parking nearby). Please arrive 15 minutes before departure.</span>
+                  </div></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" aria-expanded="false" aria-controls="faq2">
+                    <span data-i18n-fr>Puis-je choisir mon activité bien-être ?</span><span data-i18n-en>Can I choose my wellness activity?</span>
+                    <span class="plus" aria-hidden="true"></span>
+                  </button>
+                  <div class="accordion__panel" id="faq2"><div class="accordion__panel-inner">
+                    <span data-i18n-fr>Absolument. À la réservation, vous indiquez votre préférence : méditation guidée, dégustation sensorielle, ou temps libre. Vous pouvez aussi changer d'avis sur place selon votre humeur du jour.</span>
+                    <span data-i18n-en>Absolutely. At booking, you indicate your preference: guided meditation, sensory tasting, or free time. You can also change your mind on the day.</span>
+                  </div></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" aria-expanded="false" aria-controls="faq3">
+                    <span data-i18n-fr>Les régimes alimentaires sont-ils pris en compte ?</span><span data-i18n-en>Are dietary needs accommodated?</span>
+                    <span class="plus" aria-hidden="true"></span>
+                  </button>
+                  <div class="accordion__panel" id="faq3"><div class="accordion__panel-inner">
+                    <span data-i18n-fr>Oui. Options végétariennes, véganes et sans gluten disponibles — précisez-le simplement lors de la réservation.</span>
+                    <span data-i18n-en>Yes. Vegetarian, vegan and gluten-free options are available — just let us know when booking.</span>
+                  </div></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" aria-expanded="false" aria-controls="faq4">
+                    <span data-i18n-fr>Quelle est la politique d'annulation ?</span><span data-i18n-en>What is the cancellation policy?</span>
+                    <span class="plus" aria-hidden="true"></span>
+                  </button>
+                  <div class="accordion__panel" id="faq4"><div class="accordion__panel-inner">
+                    <span data-i18n-fr>Annulation gratuite jusqu'à 14 jours avant le départ. Une assurance annulation est incluse pour les imprévus. Détails dans nos conditions générales.</span>
+                    <span data-i18n-en>Free cancellation up to 14 days before departure. Cancellation insurance is included for the unexpected. See our terms for details.</span>
+                  </div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---------- RIGHT: sticky booking rail ---------- -->
+          <aside>
+            <div class="form-panel summary" aria-label="Réservation">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem">
+                <span class="tag" data-i18n-fr>À partir de</span><span class="tag hidden" data-i18n-en>From</span>
+              </div>
+              <div class="summary__total" style="padding-top:0.2rem;border:0">
+                <span class="amount">290€</span>
+                <span style="color:var(--ink-muted);font-size:0.85rem" data-i18n-fr>/ personne · tout inclus</span>
+                <span style="color:var(--ink-muted);font-size:0.85rem" data-i18n-en>/ person · all-inclusive</span>
+              </div>
+
+              <ul class="checklist mt-3" style="gap:0.6rem;font-size:0.92rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><strong>31 juillet 2026</strong> · 6h30 → 22h30</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-5-7-11a7 7 0 0 1 14 0c0 6-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Liège-Guillemins → Paris</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 20a5 5 0 0 0-10 0"/><circle cx="12" cy="8" r="4"/></svg><span data-i18n-fr>16 voyageurs maximum</span><span data-i18n-en>Max 16 guests</span></li>
+              </ul>
+
+              <a class="btn btn--block btn--lg mt-3" href="../booking.html?trip=paris-31-07-2026">
+                <span data-i18n-fr>Réserver ma place</span><span data-i18n-en>Reserve my seat</span>
+              </a>
+              <a class="btn btn--outline btn--block mt-3" href="../contact.html">
+                <span data-i18n-fr>Poser une question</span><span data-i18n-en>Ask a question</span>
+              </a>
+              <p class="form-note text-center mt-3" data-i18n-fr>Réservation sans engagement · Paiement sécurisé · Annulation gratuite J-14</p>
+              <p class="form-note text-center mt-3 hidden" data-i18n-en>No-commitment hold · Secure payment · Free cancellation up to D-14</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross-sell / next departures -->
+    <section class="section section--cream" aria-labelledby="more-title">
+      <div class="container">
+        <div class="section-head section-head--center" data-reveal>
+          <span class="eyebrow" data-i18n-fr>Bientôt</span><span class="eyebrow hidden" data-i18n-en>Coming soon</span>
+          <h2 id="more-title" data-i18n-fr>D'autres capitales vous attendent</h2>
+          <h2 class="hidden" data-i18n-en>More capitals await</h2>
+          <p class="lead" data-i18n-fr>Amsterdam, Londres et Genève rejoignent bientôt nos escapades. Inscrivez-vous pour être prévenu·e en premier.</p>
+          <p class="lead hidden" data-i18n-en>Amsterdam, London and Geneva join our escapes soon. Sign up to be the first to know.</p>
+          <a class="btn mt-3" href="../trips.html"><span data-i18n-fr>Voir toutes les escapades</span><span data-i18n-en>See all experiences</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="site-footer" data-footer></footer>
+
+  <!-- Mobile sticky booking bar -->
+  <div class="sticky-cta">
+    <span class="price">290€ <small data-i18n-fr>par personne · tout inclus</small><small class="hidden" data-i18n-en>per person · all-inclusive</small></span>
+    <a class="btn" href="../booking.html?trip=paris-31-07-2026"><span data-i18n-fr>Réserver</span><span data-i18n-en>Book</span></a>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" data-lightbox aria-hidden="true">
+    <button class="lightbox__close" type="button" aria-label="Fermer">×</button>
+    <img src="" alt="" />
+  </div>
+
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/partials.js" defer></script>
+</body>
+</html>

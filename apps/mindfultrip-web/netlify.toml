@@ -1,0 +1,30 @@
+# Netlify deployment config for the MindfulTrip static site.
+# The site is publish-root = this folder; no build step required.
+# For Vercel, this maps 1:1 to vercel.json "cleanUrls" + headers;
+# for shared hosting, just upload the folder contents to the web root.
+
+[build]
+  publish = "."
+  command = ""
+
+# Long-cache immutable assets, always-revalidate HTML.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Tighten this CSP once the final image host & form endpoint are known.
+    Content-Security-Policy = "default-src 'self'; img-src 'self' https://images.unsplash.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; form-action 'self' https://formspree.io; frame-ancestors 'self'"
+
+# Pretty URL example (optional): /trips/paris -> the detail page.
+[[redirects]]
+  from = "/paris"
+  to = "/trips/paris-bien-etre-culture.html"
+  status = 301
